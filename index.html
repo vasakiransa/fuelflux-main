@@ -97,95 +97,93 @@
           </div>
 
           <!-- Personal Form -->
-          <div id="personalForm" class="space-y-4">
+          <form id="personalForm" class="space-y-4" onsubmit="return validateForm(event)">
             <p class="text-lg font-semibold">Personal Inquiry Form</p>
             <input
               id="personalName"
               type="text"
               placeholder="Name"
               class="w-full p-2 border border-gray-300 rounded-lg"
+              required
             />
             <input
-              id="personalEmail"
+              id="personalEmail" 
               type="email"
               placeholder="Email"
               class="w-full p-2 border border-gray-300 rounded-lg"
+              required
+              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
             />
             <input
               id="personalTel"
-              type="tel"
+              type="tel" 
               placeholder="Contact Number"
               class="w-full p-2 border border-gray-300 rounded-lg"
+              required
+              pattern="[0-9]{10}"
             />
             <textarea
               id="personalFeedback"
-              placeholder="Feedback/Suggestion"
+              placeholder="Feedback/Suggestion" 
               class="w-full p-2 border border-gray-300 rounded-lg"
+              required
+              minlength="10"
             ></textarea>
             <button
               type="submit"
               class="bg-[#002C15] text-white p-3 rounded-lg"
-              onclick="sendMail(event)"
-              <!--
-              Pass
-              event
-              to
-              prevent
-              default
-              form
-              submission
-              --
             >
               Submit
             </button>
-          </div>
+          </form>
 
           <!-- Businesses Form -->
-          <div id="businessForm" class="hidden space-y-4">
+          <form id="businessForm" class="hidden space-y-4" onsubmit="return validateBusinessForm(event)">
             <p class="text-lg font-semibold">Business Inquiry Form</p>
             <input
-              id="businessName"
-              type="text"
-              placeholder="Name"
-              class="w-full p-2 border border-gray-300 rounded-lg"
+                id="businessName"
+                type="text"
+                placeholder="Name"
+                class="w-full p-2 border border-gray-300 rounded-lg"
+                required
             />
             <input
-              id="businessEmail"
-              type="email"
-              placeholder="Email"
-              class="w-full p-2 border border-gray-300 rounded-lg"
+                id="businessEmail"
+                type="email"
+                placeholder="Email"
+                class="w-full p-2 border border-gray-300 rounded-lg"
+                required
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
             />
             <input
-              id="businessTel"
-              type="tel"
-              placeholder="Contact Number"
-              class="w-full p-2 border border-gray-300 rounded-lg"
+                id="businessTel"
+                type="tel"
+                placeholder="Contact Number"
+                class="w-full p-2 border border-gray-300 rounded-lg"
+                required
+                pattern="[0-9]{10}"
             />
             <input
-              id="businessType"
-              type="text"
-              placeholder="Business Type"
-              class="w-full p-2 border border-gray-300 rounded-lg"
+                id="businessType"
+                type="text"
+                placeholder="Business Type"
+                class="w-full p-2 border border-gray-300 rounded-lg"
+                required
             />
             <textarea
-              id="businessInquiryDetails"
-              placeholder="Inquiry Details"
-              class="w-full p-2 border border-gray-300 rounded-lg"
+                id="businessInquiryDetails"
+                placeholder="Inquiry Details"
+                class="w-full p-2 border border-gray-300 rounded-lg"
+                required
+                minlength="10"
             ></textarea>
             <button
-              type="submit"
-              class="bg-[#002C15] text-white p-3 rounded-lg"
-              onclick="sendBusinessMail(event)"
-              <!--
-              Call
-              sendBusinessMail()
-              when
-              clicked
-              --
+                type="submit"
+                class="bg-[#002C15] text-white p-3 rounded-lg"
             >
-              Submit
+                Submit
             </button>
-          </div>
+        </form>
         </div>
       </div>
       <button class="sm:hidden p-6" onclick="handleMenu()">
@@ -1349,4 +1347,89 @@
     </div>
   </footer>
   <script src="./script.js"></script>
+  <script>
+    function validateForm(event) {
+      event.preventDefault();
+      
+      const name = document.getElementById('personalName').value;
+      const email = document.getElementById('personalEmail').value;
+      const tel = document.getElementById('personalTel').value;
+      const feedback = document.getElementById('personalFeedback').value;
+    
+      // Name validation
+      if (name.trim() === '') {
+        alert('Please enter your name');
+        return false;
+      }
+    
+      // Email validation
+      const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+      if (!emailPattern.test(email)) {
+        alert('Please enter a valid email address');
+        return false;  
+      }
+    
+      // Phone validation
+      const phonePattern = /^\d{10}$/;
+      if (!phonePattern.test(tel)) {
+        alert('Please enter a valid 10-digit phone number');
+        return false;
+      }
+    
+      // Feedback validation
+      if (feedback.trim().length < 10) {
+        alert('Feedback must be at least 10 characters long');
+        return false;
+      }
+    
+      // If validation passes, call sendMail()
+      sendMail(event);
+      return true;
+    }
+    function validateBusinessForm(event) {
+    event.preventDefault();
+    
+    const name = document.getElementById('businessName').value;
+    const email = document.getElementById('businessEmail').value;
+    const tel = document.getElementById('businessTel').value;
+    const businessType = document.getElementById('businessType').value;
+    const inquiryDetails = document.getElementById('businessInquiryDetails').value;
+    
+    // Name validation
+    if (name.trim() === '') {
+        alert('Please enter your business name');
+        return false;
+    }
+    
+    // Email validation
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (!emailPattern.test(email)) {
+        alert('Please enter a valid email address');
+        return false;
+    }
+    
+    // Phone validation
+    const phonePattern = /^\d{10}$/;
+    if (!phonePattern.test(tel)) {
+        alert('Please enter a valid 10-digit phone number');
+        return false;
+    }
+    
+    // Business Type validation
+    if (businessType.trim() === '') {
+        alert('Please enter your business type');
+        return false;
+    }
+    
+    // Inquiry Details validation
+    if (inquiryDetails.trim().length < 10) {
+        alert('Inquiry details must be at least 10 characters long');
+        return false;
+    }
+    
+    // If all validations pass, call sendBusinessMail()
+    sendBusinessMail(event);
+    return true;
+}
+    </script>
 </html>
